@@ -5,7 +5,7 @@ from numba import njit
 @njit(cache=True)
 def rt(
     n: np.ndarray, d: np.ndarray, wvl: np.ndarray, aoi: float = 0.0, pol: int = 0
-) -> tuple(np.ndarray, np.ndarray):
+) -> tuple[np.ndarray, np.ndarray]:
     """
     Calculate the reflection and transmission coefficients for a multilayer.
 
