@@ -13,21 +13,21 @@ See the documentation of PyIndexRepo for more information on how to access the r
 ### Background
 The free spectral range (FSR) of an etalon is the distance between two adjacent transmission peaks.
 For an ideal etalon, it is given by the following equation:
-$$
-FSR = \frac{c}{2nL\cdot \cos(\theta)}
-$$
+
+$FSR_{\nu}= \Delta \nu = \frac{c}{2nL\cdot \cos(\theta)}$
+
 where $c$ is the speed of light in vacuum, $n$ is the refractive index of the medium between the plates, $\theta$ is the angle of incidence, and $L$ is the distance between the plates.
 
 In wavelength, the FSR is given by:
-$$
-\Delta \lambda = \frac{\lambda^2}{2nL \cos(\theta)}
-$$
+
+$FSR_{\lambda} = \Delta \lambda = \frac{\lambda^2}{2nL \cos(\theta)}$
+
 where $\lambda$ is the wavelength of light in vacuum.
 
 Similarly, the absolute peak wavelength of the etalon is given by:
-$$
-\lambda = \frac{2nL \cos(\theta)}{m}
-$$
+
+$\lambda = \frac{2nL \cos(\theta)}{m}$
+
 where $m$ is the order of the interference peak.
 
 All equations above are only valid for an ideal etalon. In reality, upon reflection on the etalon mirrors,
@@ -35,12 +35,9 @@ the light undergoes a phase shift. This phase shift is given by the Fresnel equa
 As a consequence, both, the FSR and the absolute peak wavelength are modified by the phase shift.
 It is most intuitive to think of the phase shift as a change in the effective optical path length or mirror separation $L$.
 
-(2.0 * d * 1e9 * np.cos(aoi) * n + phase(wl) / np.pi * wl) / m
-
 The peak wavelength is then given by:
-$$
-\lambda = \frac{2nL \cos(\theta)+ \lambda \frac{\Phi_{\lambda}}{\pi}}{m}
-$$
+
+$\lambda = \frac{2nL \cos(\theta)+ \lambda \frac{\Phi_{\lambda}}{\pi}}{m}$
 
 ### Example
 Let's walk through the simulation of a simple etalon with a single layer of 30nm of silver on a glass substrate.
