@@ -1,3 +1,9 @@
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/stuermer/pyetalon/ci-cd.yml)
+![GitHub top language](https://img.shields.io/github/languages/top/stuermer/pyetalon)
+![GitHub License](https://img.shields.io/github/license/stuermer/pyetalon)
+![PyPI - Version](https://img.shields.io/pypi/v/pyetalon)
+
+
 ![Logo](logo.png)
 # pyetalon 
 PyEtalon is a Python library to analyse the multilayer interference of thin films in the context of etalons.
