@@ -249,20 +249,20 @@ def plot_stack(ee: list[Etalon]):
         colors = ["gray", "lightblue", "lightgreen", "darkgray"]
         unique_names = np.array(e.names)
 
-        for i, (left, right, bottom, top, name) in enumerate(
+        for i, (l, r, b, t, name) in enumerate(
             zip(left, right, bottom, top, all_names)
         ):
             idx_name = np.where(unique_names == name)[0][0]
             ax.add_patch(
                 patches.Rectangle(
-                    (left, bottom),
-                    right - left,
-                    top - bottom,
+                    (l, b),
+                    r - l,
+                    t - b,
                     edgecolor="k",
                     facecolor=colors[idx_name],
                 )
             )
-            ax.text(left + 10, 0.05 + ii, name, rotation=90)
+            ax.text(l + 10, 0.05 + ii, name, rotation=90)
 
         # ax.yaxis.set_visible(False)
         ax.set_xlabel("Accum. thickness [nm]")
