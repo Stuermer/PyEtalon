@@ -57,8 +57,8 @@ To calculate optical properties of an etalon, create an `Etalon` object and use 
 ```python
 import numpy as np
 
-from pyetalon.etalon import Etalon
-from pyetalon.plotting import plot_fsr
+from PyEtalon.etalon import Etalon
+from PyEtalon.plotting import plot_fsr
 from pyindexrepo import RefractiveIndexLibrary, Material, TabulatedIndexData, FormulaIndexData
 from pyindexrepo.dispersion_formulas import formula_2
 
