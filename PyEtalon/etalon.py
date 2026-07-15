@@ -4,22 +4,18 @@ import json
 import logging
 import pathlib
 from functools import cached_property
-from typing import Callable
+from typing import Any, Callable
 
 import numpy as np
+from numpy import dtype, ndarray, signedinteger
 from pyindexrepo import Material
 from scipy.interpolate import UnivariateSpline
 
 from PyEtalon.tmm import rt
 
-# from tmmnlay import calculate_rt as calculate_rt_gpu
 logger = logging.getLogger(__name__)
 c_handler = logging.StreamHandler()
-# logger.addHandler(c_handler)
 logger.setLevel("DEBUG")
-
-numba_logger = logging.getLogger("numba")
-numba_logger.setLevel(logging.WARNING)
 
 # constants
 c = 299792458  # speed of light [m/s]
@@ -218,23 +214,29 @@ class Etalon:
 
         # Convert given wavelength to peak order number
         # self._m = guess_m(self.wavelength, self.d_spacer, self.aoi, self.n(0), self.phase_spline)
-        self._m = np.arange(
-            int(
-                (
-                    2.0
-                    * self.d_spacer
-                    * self.get_refractive_index(0, self.wavelength_max)
-                )
-                / (self.wavelength_max * 1e-9)
-            ),
-            int(
-                (
-                    2.0
-                    * self.d_spacer
-                    * self.get_refractive_index(0, self.wavelength_min)
-                )
-                / (self.wavelength_min * 1e-9)
-            ),
+        self._m = self._find_m_range()
+
+    def _find_m_range(self) -> ndarray[tuple[Any, ...], dtype[signedinteger[Any]]]:
+        min_m = (
+            2.0 * self.d_spacer * self.get_refractive_index(0, self.wavelength_max)
+        ) / (self.wavelength_max * 1e-9)
+        max_m = (
+            2.0 * self.d_spacer * self.get_refractive_index(0, self.wavelength_min)
+        ) / (self.wavelength_min * 1e-9)
+        if isinstance(min_m, tuple):
+            min_m = min_m[0]
+        if isinstance(max_m, tuple):
+            max_m = max_m[0]
+        if isinstance(min_m, np.ndarray):
+            min_m = min_m.item()
+        if isinstance(max_m, np.ndarray):
+            max_m = max_m.item()
+
+        print(f"Min_m: {min_m}, Max_m: {max_m}")
+        print(type(min_m), type(max_m))
+        return np.arange(
+            int(min_m),
+            int(max_m),
         )[::-1]
 
     def __str__(self):
