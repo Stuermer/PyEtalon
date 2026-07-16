@@ -711,28 +711,44 @@ class Etalon:
 
         The transmission spectrum is calculated as:
 
-        T = 1 / (1 + F * sin^2(pi * d / lambda + phi))
+        T = 1 / (1 + F * sin^2(2 * pi * n * d * cos(theta) / lambda + phi))
 
         where:
         T: transmission spectrum
         F: coefficient of finesse
+        n: refractive index of the cavity material
         d: spacer thickness
+        theta: angle of incidence in the cavity
         lambda: wavelength
-        phi: phase shift upon reflection
+        phi: phase shift upon reflection of a single mirror
 
         Args:
             wavelength: Wavelength in [nm]
 
         """
+        scalar_input = np.ndim(np.asarray(wavelength)) == 0
+        wavelength = np.atleast_1d(np.asarray(wavelength, dtype=float))
         F_spline = UnivariateSpline(
             self.wavelength, self.coefficient_of_finesse, k=3, s=0
         )
 
-        return 1.0 / (
-            1.0
-            + F_spline(wavelength)
-            * np.sin(np.pi * self.d_spacer * 1e9 / wavelength) ** 2
+        phase_term = (
+            2.0
+            * np.pi
+            * np.real(self.get_refractive_index_cavity(wavelength))
+            * self.d_spacer
+            * np.cos(np.deg2rad(self.aoi))
+            * 1e9
+            / wavelength
+            + self.phase_spline(wavelength)
         )
+
+        transmission = 1.0 / (1.0 + F_spline(wavelength) * np.sin(phase_term) ** 2)
+
+        if scalar_input:
+            return float(transmission[0])
+
+        return transmission
 
     def load_parameters(self, filename: str | pathlib.Path):
         with open(filename, "r") as f:
